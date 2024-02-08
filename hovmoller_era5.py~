@@ -1,0 +1,83 @@
+import os
+import numpy as np
+import pandas as pd
+import xarray as xr
+import matplotlib
+from matplotlib.path import Path
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+import warnings
+import sys
+import metpy
+import matplotlib.gridspec as gridspec
+import metpy.calc as mpcalc
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
+from netCDF4 import Dataset
+import glob
+
+warnings.filterwarnings('ignore')
+
+# read in era5 data
+variable = '10u'
+Year = '2022'
+indir = '/g/data/rt52/era5/single-levels/reanalysis/'+variable+'/'+Year+'/'
+print('indir: ',indir)
+file = indir+variable+'_era5_oper_sfc_20220201-20220228.nc'
+print('file: ',file)
+outdir = '/home/563/ac9768/plots/'
+print('outdir: ',outdir)
+
+nc = Dataset(file, mode='r')
+print('netCDF4 variable keys: ',nc.variables.keys())
+era5_ds = xr.open_dataset(file, engine="netcdf4")
+
+#sys.exit()
+
+# create time slices and lat/lon
+start_time = '2022-02-08T00:00:00'
+end_time = '2022-02-15T23:00:00'
+time_slice = slice(start_time, end_time)
+lat_slice = -19
+lon_slice = slice(144, 148)
+
+# Get data, selecting time, lat/lon slice
+variable_data = era5_ds["u10"].sel(latitude=lat_slice,
+                              longitude=lon_slice,time=time_slice)
+#t2m_data_c = variable_data - 273.15
+
+# Get times and make array of datetime objects
+variable_times = variable_data.time.values.astype('datetime64[ms]').astype('O')
+
+# Specify longitude values for chosen domain
+lons = variable_data.longitude.values
+
+# make plot
+# Start figure
+fig, ax = plt.subplots(figsize=(13,10))
+fig.patch.set_facecolor('white')
+
+# Set some titles
+ax.set_title('Hovmoller Diagram u wind at 10m (\N{DEGREE SIGN}C)', loc='left', fontsize=15)
+ax.set_title('ERA5 Time Range: {0:%Y-%m-%d %H UTC} to {1:%Y-%m-%d %H UTC}'.format(variable_times[0], variable_times[-1]),
+          loc='right', fontsize=8)
+
+# Plot of chosen variable averaged over latitude and slightly smoothed
+levels = [-12, -10 , -8, -6, , -4 , -2 , 0, 2, 4]
+cf = ax.contourf(lons, variable_times, variable_data, levels=10, cmap=plt.cm.bwr, extend='both')
+line_colors = ['black' for l in cf.levels]
+cs = ax.contour(lons, variable_times, variable_data, alpha=0.5,colors=line_colors, linewidths=0.8,linestyles='dashed') 
+plt.clabel(cs,levels,inline=True, fontsize=9, colors=line_colors)
+cbar = plt.colorbar(cf, orientation='vertical', pad=0.04, aspect=50, extendrect=True)
+cbar.set_label('\N{DEGREE SIGN}C',fontsize=15) 
+
+# Make some ticks and tick labels
+xticks = np.arange(144,148.5,0.5)
+ax.set_xticks(xticks)
+x_tick_labels = ["144","144.5","145","145.5","146","146.5","147","147.7","148"]
+ax.set_xticklabels(x_tick_labels)
+ax.set_xlabel("Longitude",fontsize=15)
+ax.set_ylabel("Day",fontsize=15)
+
+figs = ax.get_figure()
+figs.savefig(outdir+"Hovmoller_2022_02_u10") 
