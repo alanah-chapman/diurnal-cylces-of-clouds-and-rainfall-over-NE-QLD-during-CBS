@@ -1,0 +1,2 @@
+# Diurnal Cycles of Clouds and Precipitation During the Coral Bleaching Season
+This repository contains code I have written for my masters thesis "Diurnal Cycles of Clouds and Precipitation During the Coral Bleaching Season". The code accesses the Australian Bureau of Meteorology's level 2 radar datasets, BARRA-R2 regional reanalysis and level 1 Himawari-8 atmospheric and cloud products, all of which can be found on NCI.
