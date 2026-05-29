@@ -1,0 +1,1 @@
+from define_wind_regime import wind_times

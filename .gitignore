@@ -1,0 +1,25 @@
+# Jupyter checkpoints
+.ipynb_checkpoints
+__pycache__
+.ipynb_checkpoints/
+__pycache__/
+Paper_figures/__pycache__/
+Paper_figures/.ipynb_checkpoints/
+Zhao_et_al_2025prepring_Fig2/.ipynb_checkpoints/
+Paper_figures/archive_figs/
+Paper_figures/logs/
+Paper_figures/figs/
+
+# Entire folders
+My_case study/
+Masters_scripts/
+
+# Specific files
+.env
+test.py
+Study_domain.ipynb
+
+# Data and log files
+*.nc
+*.log
+*.png
