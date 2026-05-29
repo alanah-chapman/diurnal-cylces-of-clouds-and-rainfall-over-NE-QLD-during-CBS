@@ -23,3 +23,5 @@ Study_domain.ipynb
 *.nc
 *.log
 *.png
+*.zarr
+**/*.zarr/
