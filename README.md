@@ -20,11 +20,12 @@ The code analyses the following datasets, all available on NCI:
 ## Repository Structure
 
 ```
-├── Paper_figures/          # Figure production for Chapman et al. (2026)
+├── Chapman_etal_2026preprint/          # Figure production for Chapman et al. (2026)
     ├── F01_StudyDomain.ipynb           # Figure 1
     ├── F02_Snapshots.ipynb             # Figure 2
     ├── F03_BARRA-R2_WindRegimes.ipynb  # Figure 3 BARRA-R2 850 hPa winds
     ├── F04_F05_Eqpt.ipynb              # Figure 4 & 5
+    │   └── theta-e_extras/             # Contains scripts for Appendix A Figs. A1-A2 
     ├── F06_DiurnalCycles.ipynb         # Figure 6
     ├── Fig6_12LST_windregime_def/      # Radar processing
     │   ├── fig6_mean_rr.py  
