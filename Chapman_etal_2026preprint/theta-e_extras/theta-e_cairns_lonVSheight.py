@@ -177,7 +177,7 @@ if __name__ == '__main__':
         'nw': nw_cairns,
     }
 
-    output_dir = '/home/563/ac9768/GBR/scripts/Paper_figures/theta-e_extras/'
+    output_dir = '/home/563/ac9768/GBR/scripts/Chapman_etal_2026preprint/theta-e_extras/'
     os.makedirs(output_dir, exist_ok=True)
 
     if var_name == 'RH':
@@ -272,7 +272,7 @@ if __name__ == '__main__':
 #         results[regime] = var.sel(time=times).mean(['lat','time'])
         
 #     # Save results to NetCDF files
-#     output_dir = '/home/563/ac9768/GBR/scripts/Paper_figures/theta-e_extras/'
+#     output_dir = '/home/563/ac9768/GBR/scripts/Chapman_etal_2026preprint/theta-e_extras/'
 #     os.makedirs(output_dir, exist_ok=True)
 
 #     for regime in ['nw', 'ne', 'sw', 'se']:

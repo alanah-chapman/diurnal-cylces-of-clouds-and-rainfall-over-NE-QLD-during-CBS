@@ -164,7 +164,7 @@ if __name__ == '__main__':
 
     regimes = {'ne': ne, 'se': se, 'sw': sw, 'nw': nw}
 
-    output_dir = '/home/563/ac9768/GBR/scripts/Paper_figures/theta-e_extras/'
+    output_dir = '/home/563/ac9768/GBR/scripts/Chapman_etal_2026preprint/theta-e_extras/'
     os.makedirs(output_dir, exist_ok=True)
 
     # create dataset for the variable 
@@ -180,15 +180,15 @@ if __name__ == '__main__':
         results[regime] = var.sel(time=times).mean(['time'])
 
     print("Saving results to NetCDF files...")
-    # paths    = [f'{output_dir}{var_name}_{r}_regime_{site}_1979-2024_pbs.nc' for r in ['nw', 'ne', 'sw', 'se']]
-    # datasets = [results[r] if isinstance(results[r], xr.Dataset) else results[r].to_dataset(name=var_name) for r in ['nw', 'ne', 'sw', 'se']]
-    # xr.save_mfdataset(datasets, paths)
+    paths    = [f'{output_dir}{var_name}_{r}_regime_{site}_1979-2024_pbs.nc' for r in ['nw', 'ne', 'sw', 'se']]
+    datasets = [results[r] if isinstance(results[r], xr.Dataset) else results[r].to_dataset(name=var_name) for r in ['nw', 'ne', 'sw', 'se']]
+    xr.save_mfdataset(datasets, paths)
 
-    output_dir = '/home/563/ac9768/GBR/scripts/Paper_figures/theta-e_extras/'
-    os.makedirs(output_dir, exist_ok=True)
+    # output_dir = '/home/563/ac9768/GBR/scripts/Chapman_etal_2026preprint/theta-e_extras/'
+    # os.makedirs(output_dir, exist_ok=True)
 
-    for regime in ['sw', 'se']:
-        results[regime].to_netcdf(f'{output_dir}{var_name}_{regime}_regime_cairns_1979-2024_pbs.nc')
+    # for regime in ['sw', 'se']:
+    #     results[regime].to_netcdf(f'{output_dir}{var_name}_{regime}_regime_cairns_1979-2024_pbs.nc')
             
     client.close()
     cluster.close()
