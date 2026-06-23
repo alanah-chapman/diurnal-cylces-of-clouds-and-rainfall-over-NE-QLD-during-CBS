@@ -157,7 +157,7 @@ def get_radar_under_wind_regimes(radar_ds: xr.DataArray, barra_regimes_ds: xr.Da
     mean_list = []
 
     for h in hours:
-        # load one hour at a time — never load full array
+        # load one hour at a time 
         hour_mask = (selected.time.dt.hour == h).values
         hour_data = selected.isel(time=hour_mask).load()
         mean_list.append(float(hour_data.mean(skipna=True)))

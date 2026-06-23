@@ -4,11 +4,11 @@
 #PBS -q normal
 #PBS -l ncpus=48
 #PBS -l mem=192GB
-#PBS -l walltime=06:00:00
+#PBS -l walltime=10:00:00
 #PBS -l wd
 #PBS -l storage=gdata/q90+gdata/v46+scratch/v46+gdata/xp65
 #PBS -j oe
-#PBS -o /home/563/ac9768/GBR/scripts/Paper_figures/logs/save_radar_zarr.log
+#PBS -o /home/563/ac9768/GBR/scripts/Chapman_etal_2026preprint/logs/save_radar_zarr.log
 
 set -e
 
@@ -16,7 +16,7 @@ set -e
 module use /g/data/xp65/public/modules
 module load conda/analysis3
 
-cd /home/563/ac9768/GBR/scripts/Paper_figures/  # path to save_radar_zarr.py
+cd /home/563/ac9768/GBR/scripts/Chapman_etal_2026preprint/  # path to save_radar_zarr.py
 
 # echo "Starting towns..." 
 # python3 save_radar_zarr.py towns

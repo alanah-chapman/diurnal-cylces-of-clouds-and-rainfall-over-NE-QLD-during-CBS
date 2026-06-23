@@ -52,7 +52,7 @@ def process_hour_freq(ds):
     - int: Frequency of raining points (%)
     """
     total_points = (ds.rainrate == 0).where(~ds.rainrate.isnull()).count(dim=['time','x', 'y'])
-    number_of_non_raining_points = ds.rainrate.where(((ds.rainrate>=0)&(ds.rainrate<0.001))).count(dim=['x', 'y', 'time'])
+    number_of_non_raining_points = ds.rainrate.where(((ds.rainrate>=0)&(ds.rainrate<0.1))).count(dim=['x', 'y', 'time'])
     number_of_raining_points = (total_points) - (number_of_non_raining_points)
     freq = (number_of_raining_points / total_points) * 100
     return freq
@@ -93,9 +93,11 @@ def mask_radar_data(
         ocean_mask = xr.open_dataset(ocean_mask_path)['__xarray_dataarray_variable__']  # True = land
 
         # --- apply combined masks ---
-        rr_ocean = ds.rainrate.where(base_mask &  land_mask)   # ocean pixels only
-        rr_land  = ds.rainrate.where(base_mask &  ocean_mask)   # land pixels only
-
+        rr_ocean = ds.where(base_mask &  land_mask)   # ocean pixels only
+        rr_land  = ds.where(base_mask &  ocean_mask)   # land pixels only
+        #towns
+        # rr_ocean = ds.rainrate.where(base_mask &  land_mask)   # ocean pixels only
+        # rr_land  = ds.rainrate.where(base_mask &  ocean_mask)   # land pixels only
         return rr_ocean, rr_land
     else:
         rr_ocean = ds 
@@ -139,17 +141,17 @@ def get_freq_under_wind_regimes(radar_ds: xr.DataArray, regime_times: np.ndarray
 SITES = {
     'towns': {
         'zarr_path':        '/scratch/v46/ac9768/radar/towns_rainrate.zarr',
-        'bb_mask_path':     '/home/563/ac9768/GBR/scripts/Paper_figures/radar_masks/bb_mask_towns.nc',
-        'land_mask_path':   '/home/563/ac9768/GBR/scripts/Paper_figures/radar_masks/bbANDland_mask_towns.nc',
-        'ocean_mask_path':  '/home/563/ac9768/GBR/scripts/Paper_figures/radar_masks/bbANDocean_mask_towns.nc',
+        'bb_mask_path':     '/home/563/ac9768/GBR/scripts/Chapman_etal_2026preprint/radar_masks/bb_mask_towns.nc',
+        'land_mask_path':   '/home/563/ac9768/GBR/scripts/Chapman_etal_2026preprint/radar_masks/bbANDland_mask_towns.nc',
+        'ocean_mask_path':  '/home/563/ac9768/GBR/scripts/Chapman_etal_2026preprint/radar_masks/bbANDocean_mask_towns.nc',
         'barra_path':       '/g/data/q90/ac9768/GBR/barra-2/barra-2_850hPa_winds_townsville.nc',
         'lon_center':       146.5509,
     },
     'cairns': {
         'zarr_path':        '/scratch/v46/ac9768/radar/cairns_rainrate.zarr',
-        'bb_mask_path':     '/home/563/ac9768/GBR/scripts/Paper_figures/radar_masks/bb_mask_cairns.nc',
-        'land_mask_path':   '/home/563/ac9768/GBR/scripts/Paper_figures/radar_masks/bbANDland_mask_cairns.nc',
-        'ocean_mask_path':  '/home/563/ac9768/GBR/scripts/Paper_figures/radar_masks/bbANDocean_mask_cairns.nc',
+        'bb_mask_path':     '/home/563/ac9768/GBR/scripts/Chapman_etal_2026preprint/radar_masks/bb_mask_cairns.nc',
+        'land_mask_path':   '/home/563/ac9768/GBR/scripts/Chapman_etal_2026preprint/radar_masks/bbANDland_mask_cairns.nc',
+        'ocean_mask_path':  '/home/563/ac9768/GBR/scripts/Chapman_etal_2026preprint/radar_masks/bbANDocean_mask_cairns.nc',
         'barra_path':       '/g/data/q90/ac9768/GBR/barra-2/barra-2_850hPa_winds_cairns.nc',
         'lon_center':       145.683,
     },
@@ -195,7 +197,7 @@ if __name__ == '__main__':
         rr_land  = None
 
     print('Compute rain frequency per wind regime', flush=True)
-    out_base = '/home/563/ac9768/GBR/scripts/Paper_figures/Fig6_12LST_windregime_def'
+    out_base = '/home/563/ac9768/GBR/scripts/Chapman_etal_2026preprint/Fig6_12LST_windregime_def'
 
     for regime, regime_times in wind_regimes.items():
         print(f'  processing {regime} ocean...', flush=True)
